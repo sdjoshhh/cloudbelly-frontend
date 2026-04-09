@@ -1,3 +1,6 @@
+@import 'leaflet.markercluster/dist/MarkerCluster.css';
+@import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
+
 :root {
   --text: #6b6375;
   --text-h: #08060d;
