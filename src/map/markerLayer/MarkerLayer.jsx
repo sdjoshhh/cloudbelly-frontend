@@ -81,8 +81,13 @@ function getAllData() {
   return fetchPromise
 }
 
-const PlaceMarker = memo(({ position, label, count, avgPrice }) => (
-  <Marker position={position}>
+const PlaceMarker = memo(({ position, label, count, avgPrice, onMarkerClick }) => (
+  <Marker
+    position={position}
+    eventHandlers={{
+      click: () => onMarkerClick({ label, count, avgPrice })
+    }}
+  >
     <Popup>
       <strong>{label}</strong><br />
       {count} Sales, Average Price ${avgPrice.toLocaleString()}
@@ -90,7 +95,7 @@ const PlaceMarker = memo(({ position, label, count, avgPrice }) => (
   </Marker>
 ))
 
-function MarkerLayer({ onLoadingChange }) {
+function MarkerLayer({ onLoadingChange, onMarkerClick }) {
   const [zoom, setZoom] = useState(5)
   const [cityMarkers, setCityMarkers] = useState([])
   const [suburbMarkers, setSuburbMarkers] = useState([])
@@ -117,8 +122,8 @@ function MarkerLayer({ onLoadingChange }) {
   const markers = zoom >= 6 ? suburbMarkers : cityMarkers
 
   const renderedMarkers = useMemo(
-    () => markers.map(m => <PlaceMarker key={m.id} {...m} />),
-    [markers]
+    () => markers.map(m => <PlaceMarker key={m.id} {...m} onMarkerClick={onMarkerClick} />),
+    [markers, onMarkerClick]
   )
 
   return <>{renderedMarkers}</>

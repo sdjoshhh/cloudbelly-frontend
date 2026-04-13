@@ -14,6 +14,7 @@ function InvalidateSize() {
 
 function Map() {
   const [loading, setLoading] = useState(true)
+  const [selected, setSelected] = useState(null)
 
   const countryBounds = [
     [-44.0, 112.0],
@@ -31,11 +32,18 @@ function Map() {
         </div>
       )}
       <div className='map-info'>
-        <div className='text'>
-          <strong>Welcome to our interactive map!</strong><br />
-          <a>Lorem ipsum dolors umbridge or whatever it was i can't remember that shit</a>
-        </div>
-        
+        {selected ? (
+          <div className='text'>
+            <strong>{selected.label}</strong><br />
+            <p>{selected.count} Sales</p>
+            <p>Average Price: ${selected.avgPrice.toLocaleString()}</p>
+          </div>
+        ) : (
+          <div className='text'>
+            <strong>Welcome to our interactive map!</strong><br />
+            <p>Click a marker to see property data</p>
+          </div>
+        )}
       </div>
       <MapContainer
         center={[-25.2744, 133.7751]}
@@ -50,7 +58,7 @@ function Map() {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         <InvalidateSize />
-        <MarkerLayer onLoadingChange={setLoading} />
+        <MarkerLayer onLoadingChange={setLoading} onMarkerClick={setSelected} />
       </MapContainer>
     </div>
   )
