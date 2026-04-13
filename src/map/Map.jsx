@@ -1,5 +1,5 @@
 import { MapContainer, TileLayer, useMap } from 'react-leaflet'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import 'leaflet/dist/leaflet.css'
 import './Map.css'
 import MarkerLayer from './markerLayer/MarkerLayer'
@@ -13,6 +13,8 @@ function InvalidateSize() {
 }
 
 function Map() {
+  const [loading, setLoading] = useState(true)
+
   const countryBounds = [
     [-44.0, 112.0],
     [-10.0, 154.0]
@@ -20,6 +22,14 @@ function Map() {
 
   return (
     <div className="map-container">
+      {loading && (
+        <div className="map-loading">
+          <div className="map-loading-box">
+            <div className="map-spinner" />
+            <p>Loading...</p>
+          </div>
+        </div>
+      )}
       <MapContainer
         center={[-25.2744, 133.7751]}
         minZoom={4}
@@ -33,7 +43,7 @@ function Map() {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         <InvalidateSize />
-        <MarkerLayer />
+        <MarkerLayer onLoadingChange={setLoading} />
       </MapContainer>
     </div>
   )

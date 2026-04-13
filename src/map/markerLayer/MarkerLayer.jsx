@@ -69,11 +69,19 @@ const PlaceMarker = memo(({ position, label, count, avgPrice }) => (
   </Marker>
 ))
 
-function MarkerLayer() {
+function MarkerLayer({ onLoadingChange }) {
   const [markers, setMarkers] = useState(cachedMarkers ?? [])
 
   useEffect(() => {
-    if (!cachedMarkers) getMarkers().then(setMarkers)
+    if (cachedMarkers) {
+      onLoadingChange(false)
+      return
+    }
+    onLoadingChange(true)
+    getMarkers().then(m => {
+      setMarkers(m)
+      onLoadingChange(false)
+    })
   }, [])
 
   const renderedMarkers = useMemo(
