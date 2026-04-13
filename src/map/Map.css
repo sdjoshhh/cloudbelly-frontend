@@ -1,7 +1,24 @@
 .map-container {
   position: relative;
-  height: 100vh;
+  height: 92vh;
   width: 100%;
+}
+
+.map-info {
+  position: absolute;
+  height: 50vh;
+  width: 15vw;
+  top: 20vh;
+  left: 5vw;
+  z-index: 1000;
+  background-color: white;
+  border-radius: 1vw;
+}
+
+.text {
+  padding: 1vw;
+  display: flex;
+  flex-direction: column;
 }
 
 .map {

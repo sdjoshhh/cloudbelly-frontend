@@ -30,6 +30,13 @@ function Map() {
           </div>
         </div>
       )}
+      <div className='map-info'>
+        <div className='text'>
+          <strong>Welcome to our interactive map!</strong><br />
+          <a>Lorem ipsum dolors umbridge or whatever it was i can't remember that shit</a>
+        </div>
+        
+      </div>
       <MapContainer
         center={[-25.2744, 133.7751]}
         minZoom={4}
