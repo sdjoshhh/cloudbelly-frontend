@@ -1,10 +1,12 @@
 import { useState, useEffect, memo, useMemo } from 'react'
-import { Marker, Popup } from 'react-leaflet'
+import { Marker, Popup, useMapEvents } from 'react-leaflet'
 
 const SUBURBS = [
   "Blacktown", "Parramatta", "Chatswood", "Bondi", "Manly",
   "Newtown", "Randwick", "Surry Hills", "Castle Hill", "Homebush"
 ]
+
+const CITY_COORDS = [-33.8688, 151.2093] // Sydney
 
 const geocodeCache = {}
 
@@ -23,11 +25,10 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
 
-let cachedMarkers = null
+const cache = { city: null, suburb: null }
 let fetchPromise = null
 
-function getMarkers() {
-  if (cachedMarkers) return Promise.resolve(cachedMarkers)
+function getAllData() {
   if (fetchPromise) return fetchPromise
 
   fetchPromise = Promise.all(
@@ -36,25 +37,45 @@ function getMarkers() {
         .then(r => r.json())
     )
   ).then(async results => {
-    const markers = []
+    // suburb markers
+    const suburbMarkers = []
+    let totalPrice = 0
+    let totalCount = 0
+
     for (let i = 0; i < SUBURBS.length; i++) {
       const suburb = SUBURBS[i]
       const events = results[i].events ?? []
       if (!events.length) continue
-      const total = events.reduce((sum, e) => sum + e.attributes.price, 0)
+
+      const suburbTotal = events.reduce((sum, e) => sum + e.attributes.price, 0)
+      totalPrice += suburbTotal
+      totalCount += events.length
+
       if (i > 0) await sleep(1000)
       const coords = await geocodePlace(suburb)
       if (!coords) continue
-      markers.push({
+
+      suburbMarkers.push({
         id: suburb,
         position: coords,
         label: suburb,
         count: events.length,
-        avgPrice: Math.round(total / events.length),
+        avgPrice: Math.round(suburbTotal / events.length),
       })
     }
-    cachedMarkers = markers
-    return markers
+
+    cache.suburb = suburbMarkers
+
+    // single city marker from all suburb data
+    cache.city = [{
+      id: 'sydney',
+      position: CITY_COORDS,
+      label: 'Sydney', // hard coded to sydney rn, need to change later when we add more city stuff
+      count: totalCount,
+      avgPrice: totalCount > 0 ? Math.round(totalPrice / totalCount) : 0,
+    }]
+
+    return cache
   })
 
   return fetchPromise
@@ -64,25 +85,36 @@ const PlaceMarker = memo(({ position, label, count, avgPrice }) => (
   <Marker position={position}>
     <Popup>
       <strong>{label}</strong><br />
-      {count} sales · avg ${avgPrice.toLocaleString()}
+      {count} Sales, Average Price ${avgPrice.toLocaleString()}
     </Popup>
   </Marker>
 ))
 
 function MarkerLayer({ onLoadingChange }) {
-  const [markers, setMarkers] = useState(cachedMarkers ?? [])
+  const [zoom, setZoom] = useState(5)
+  const [cityMarkers, setCityMarkers] = useState([])
+  const [suburbMarkers, setSuburbMarkers] = useState([])
+
+  useMapEvents({
+    zoomend: (e) => setZoom(e.target.getZoom())
+  })
 
   useEffect(() => {
-    if (cachedMarkers) {
+    if (cache.city && cache.suburb) {
+      setCityMarkers(cache.city)
+      setSuburbMarkers(cache.suburb)
       onLoadingChange(false)
       return
     }
     onLoadingChange(true)
-    getMarkers().then(m => {
-      setMarkers(m)
+    getAllData().then(data => {
+      setCityMarkers(data.city)
+      setSuburbMarkers(data.suburb)
       onLoadingChange(false)
     })
   }, [])
+
+  const markers = zoom >= 6 ? suburbMarkers : cityMarkers
 
   const renderedMarkers = useMemo(
     () => markers.map(m => <PlaceMarker key={m.id} {...m} />),
