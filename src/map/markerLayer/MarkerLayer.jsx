@@ -1,53 +1,70 @@
 import { useState, useEffect, memo, useMemo } from 'react'
 import { Marker, Popup } from 'react-leaflet'
 
-const CITY_COORDS = {
-  Sydney:    [-33.8688, 151.2093],
-  Melbourne: [-37.8136, 144.9631],
-  Brisbane:  [-27.4698, 153.0251],
-  Perth:     [-31.9505, 115.8605],
-  Adelaide:  [-34.9285, 138.6007],
+const SUBURBS = [
+  "Blacktown", "Parramatta", "Chatswood", "Bondi", "Manly",
+  "Newtown", "Randwick", "Surry Hills", "Castle Hill", "Homebush"
+]
+
+const geocodeCache = {}
+
+async function geocodePlace(name) {
+  if (geocodeCache[name]) return geocodeCache[name]
+  const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(name + ', NSW, Australia')}&format=json&limit=1`
+  const res = await fetch(url, { headers: { 'Accept-Language': 'en', 'User-Agent': 'PropertyApp/1.0' } })
+  const data = await res.json()
+  if (!data.length) return null
+  const coords = [parseFloat(data[0].lat), parseFloat(data[0].lon)]
+  geocodeCache[name] = coords
+  return coords
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms))
 }
 
 let cachedMarkers = null
 let fetchPromise = null
 
-function fetchMarkers() {
+function getMarkers() {
   if (cachedMarkers) return Promise.resolve(cachedMarkers)
   if (fetchPromise) return fetchPromise
 
-  fetchPromise = fetch('https://tvfiek3hzi.execute-api.us-east-1.amazonaws.com/dev/api/v1/events?suburb=N%2FA')
-    .then(res => res.json())
-    .then(data => {
-      const byCity = {}
-      data.events
-        .filter(event => CITY_COORDS[event.locations[0]])
-        .forEach(event => {
-          const city = event.locations[0]
-          if (!byCity[city]) byCity[city] = { count: 0, total: 0 }
-          byCity[city].count += 1
-          byCity[city].total += event.attributes.price
-        })
-
-      cachedMarkers = Object.entries(byCity).map(([city, { count, total }]) => ({
-        id: city,
-        position: CITY_COORDS[city],
-        city,
-        count,
-        avgPrice: Math.round(total / count),
-      }))
-
-      return cachedMarkers
-    })
+  fetchPromise = Promise.all(
+    SUBURBS.map(s =>
+      fetch(`https://tvfiek3hzi.execute-api.us-east-1.amazonaws.com/dev/api/v1/events?suburb=${encodeURIComponent(s)}&state=NSW`)
+        .then(r => r.json())
+    )
+  ).then(async results => {
+    const markers = []
+    for (let i = 0; i < SUBURBS.length; i++) {
+      const suburb = SUBURBS[i]
+      const events = results[i].events ?? []
+      if (!events.length) continue
+      const total = events.reduce((sum, e) => sum + e.attributes.price, 0)
+      if (i > 0) await sleep(1000)
+      const coords = await geocodePlace(suburb)
+      if (!coords) continue
+      markers.push({
+        id: suburb,
+        position: coords,
+        label: suburb,
+        count: events.length,
+        avgPrice: Math.round(total / events.length),
+      })
+    }
+    cachedMarkers = markers
+    return markers
+  })
 
   return fetchPromise
 }
 
-const CityMarker = memo(({ position, city, count, avgPrice }) => (
+const PlaceMarker = memo(({ position, label, count, avgPrice }) => (
   <Marker position={position}>
     <Popup>
-      <strong>{city}</strong><br />
-      {count} events · avg ${avgPrice.toLocaleString()}
+      <strong>{label}</strong><br />
+      {count} sales · avg ${avgPrice.toLocaleString()}
     </Popup>
   </Marker>
 ))
@@ -56,16 +73,15 @@ function MarkerLayer() {
   const [markers, setMarkers] = useState(cachedMarkers ?? [])
 
   useEffect(() => {
-    if (cachedMarkers) return
-    fetchMarkers().then(setMarkers)
+    if (!cachedMarkers) getMarkers().then(setMarkers)
   }, [])
 
   const renderedMarkers = useMemo(
-    () => markers.map(m => <CityMarker key={m.id} {...m} />),
+    () => markers.map(m => <PlaceMarker key={m.id} {...m} />),
     [markers]
   )
 
-  return renderedMarkers
+  return <>{renderedMarkers}</>
 }
 
 export default MarkerLayer
