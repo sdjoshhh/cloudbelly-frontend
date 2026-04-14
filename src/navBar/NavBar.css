@@ -1,0 +1,24 @@
+.Navbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  height: 8vh;
+  width: 100vw;
+  color: black;
+  background-color: black;
+  gap: 2vw;
+  
+}
+
+Button {
+  background-color: black;
+  color: white;
+  border: none;
+  height: 8vh;
+  font-size: large;
+}
+
+Button:hover {
+  background-color: rgb(63, 63, 63);
+  cursor: pointer;
+}
