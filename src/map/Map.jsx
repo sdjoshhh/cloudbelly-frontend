@@ -4,6 +4,7 @@ import 'leaflet/dist/leaflet.css'
 import './Map.css'
 import MarkerLayer from './markerLayer/MarkerLayer'
 import Navbar from '../navBar/NavBar'
+import ChartSingle from '../chart/ChartSingle'
 
 function InvalidateSize() {
   const map = useMap()
@@ -24,7 +25,6 @@ function Map() {
 
   return (
     <>
-      <Navbar />
       <div className="map-container">
         {loading && (
           <div className="map-loading">
@@ -37,9 +37,10 @@ function Map() {
         <div className='map-info'>
           {selected ? (
             <div className='text'>
-              <strong>{selected.label}</strong><br />
+              <strong>{selected.label}</strong>
               <p>{selected.count} Sales</p>
               <p>Average Price: ${selected.avgPrice.toLocaleString()}</p>
+              <ChartSingle suburb={selected.label} state="NSW" />
             </div>
           ) : (
             <div className='text'>
