@@ -17,10 +17,10 @@ function Home() {
             <a>All the property info you need in one place</a>
             <a>Research smarter, plan better, buy with confidence</a>
           </div>
-          <div className='button-container'>
+          {/* <div className='button-container'>
             <button onClick={() => navigate('/map')}>map</button>
             <button>analysis</button>
-          </div>
+          </div> */}
           <div className='box'>
             <a className='box-text'>YOUR EYE IN THE SKY</a>
           </div>
