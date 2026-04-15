@@ -11,7 +11,7 @@ function Navbar() {
       <NavLink to='/'><button><IoHomeSharp /></button></NavLink>
       <NavLink to='/map'><button><HiMapPin /></button></NavLink>
       <NavLink to='/analysis'><button><FaChartLine /></button></NavLink>
-      <NavLink to='/user'><button><IoPersonSharp /></button></NavLink>
+      <NavLink to='/login'><button><IoPersonSharp /></button></NavLink>
     </div>
   )
 }

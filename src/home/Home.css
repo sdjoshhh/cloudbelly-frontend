@@ -72,6 +72,11 @@
   cursor: pointer;
 }
 
+.housefly-logo {
+  width: 15vw;
+  margin: 1vw;
+}
+
 .box {
   height: 3.5vw;
   width: 15vw;
