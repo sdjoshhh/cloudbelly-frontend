@@ -7,7 +7,6 @@
   color: black;
   background-color: black;
   gap: 2vw;
-  
 }
 
 Button {
@@ -16,9 +15,10 @@ Button {
   border: none;
   height: 8vh;
   font-size: large;
+  width: 10vw;
 }
 
 Button:hover {
-  background-color: rgb(63, 63, 63);
+  background-color: rgb(76, 76, 76);
   cursor: pointer;
 }

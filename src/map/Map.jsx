@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import 'leaflet/dist/leaflet.css'
 import './Map.css'
 import MarkerLayer from './markerLayer/MarkerLayer'
+import Navbar from '../navBar/NavBar'
 
 function InvalidateSize() {
   const map = useMap()
@@ -22,45 +23,49 @@ function Map() {
   ]
 
   return (
-    <div className="map-container">
-      {loading && (
-        <div className="map-loading">
-          <div className="map-loading-box">
-            <div className="map-spinner" />
-            <p>Loading...</p>
-          </div>
-        </div>
-      )}
-      <div className='map-info'>
-        {selected ? (
-          <div className='text'>
-            <strong>{selected.label}</strong><br />
-            <p>{selected.count} Sales</p>
-            <p>Average Price: ${selected.avgPrice.toLocaleString()}</p>
-          </div>
-        ) : (
-          <div className='text'>
-            <strong>Welcome to our interactive map!</strong><br />
-            <p>Click a marker to see property data</p>
+    <>
+      <Navbar />
+      <div className="map-container">
+        {loading && (
+          <div className="map-loading">
+            <div className="map-loading-box">
+              <div className="map-spinner" />
+              <p>Loading...</p>
+            </div>
           </div>
         )}
+        <div className='map-info'>
+          {selected ? (
+            <div className='text'>
+              <strong>{selected.label}</strong><br />
+              <p>{selected.count} Sales</p>
+              <p>Average Price: ${selected.avgPrice.toLocaleString()}</p>
+            </div>
+          ) : (
+            <div className='text'>
+              <strong>Welcome to our interactive map!</strong><br />
+              <p>Click a marker to see property data</p>
+            </div>
+          )}
+        </div>
+        <MapContainer
+          center={[-25.2744, 133.7751]}
+          minZoom={4}
+          zoom={5}
+          className="map"
+          maxBounds={countryBounds}
+          maxBoundsViscosity={1.0}
+        >
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          <InvalidateSize />
+          <MarkerLayer onLoadingChange={setLoading} onMarkerClick={setSelected} />
+        </MapContainer>
       </div>
-      <MapContainer
-        center={[-25.2744, 133.7751]}
-        minZoom={4}
-        zoom={5}
-        className="map"
-        maxBounds={countryBounds}
-        maxBoundsViscosity={1.0}
-      >
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        <InvalidateSize />
-        <MarkerLayer onLoadingChange={setLoading} onMarkerClick={setSelected} />
-      </MapContainer>
-    </div>
+    </>
+    
   )
 }
 
