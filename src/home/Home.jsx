@@ -1,6 +1,7 @@
 import './Home.css'
 import useTypewriter from './UseTypewriter.jsx'
 import { useNavigate } from 'react-router-dom'
+import houseflyLogo from '../assets/housefly.png'
 
 function Home() {
   const navigate = useNavigate()
@@ -12,6 +13,7 @@ function Home() {
           src='intro-bg.png'
         />
         <div className='intro-container'>
+          <img className="housefly-logo" src={houseflyLogo} alt="Housefly Logo" />
           <div className='title'>{useTypewriter('WELCOME TO HOUSEFLY', 45)}</div>
           <div className='body-text'>
             <a>All the property info you need in one place</a>
