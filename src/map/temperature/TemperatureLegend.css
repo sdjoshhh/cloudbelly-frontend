@@ -1,0 +1,36 @@
+.temp-legend {
+  position: fixed;
+  top: 16px;
+  left: 79vw;
+  transform: translateX(-50%) trans;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 8px;
+  padding: 8px 14px 6px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  min-width: 220px;
+  pointer-events: none;
+}
+
+.temp-legend-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: #444;
+  margin-bottom: 5px;
+  text-align: center;
+  letter-spacing: 0.02em;
+}
+
+.temp-legend-bar {
+  height: 12px;
+  border-radius: 6px;
+  width: 100%;
+}
+
+.temp-legend-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3px;
+  font-size: 11px;
+  color: #555;
+}
