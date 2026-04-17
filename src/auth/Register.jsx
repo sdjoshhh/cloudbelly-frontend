@@ -3,6 +3,7 @@ import {Button, Field, Input, Label} from '@headlessui/react';
 import {useNavigate} from 'react-router-dom';
 import ErrorPopup from '../error/ErrorPopup';
 import houseflyLogo from "../assets/housefly.png";
+import { register } from "./auth.js"
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -35,10 +36,7 @@ const Register = () => {
     }
 
     try {
-      const jwt = require("jsonwebtoken");
-      const payload = { email: email, password: password };
-      const token = jwt.sign(payload, "cloudbelly");
-      localStorage.setItem("token", token);
+      register(email, password, name);
       window.location.href = "/"; // Force reload to get store data
     } catch (err) {
       setError(err instanceof Error ? err.message : "Registration failed");
