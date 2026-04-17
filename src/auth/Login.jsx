@@ -1,8 +1,9 @@
-import {useState, useEffect} from "react";
-import {Button, Field, Input, Label} from "@headlessui/react";
-import {useNavigate} from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Button, Field, Input, Label } from "@headlessui/react";
+import { useNavigate } from "react-router-dom";
 import ErrorPopup from "../error/ErrorPopup";
 import houseflyLogo from "../assets/housefly.png";
+import { login, getCurrentUser } from "./auth.js"
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -39,11 +40,9 @@ const Login = () => {
     }
 
     try {
-      const jwt = require("jsonwebtoken");
-      const payload = { email: email, password: password };
-      const token = jwt.sign(payload, "cloudbelly");
-      localStorage.setItem("token", token);
+      login(email, password);
       window.location.href = "/"; // Force reload to get store data
+      console.log("Welcome" + getCurrentUser().name);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Login failed");
     }
