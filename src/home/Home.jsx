@@ -2,9 +2,15 @@ import './Home.css'
 import useTypewriter from './UseTypewriter.jsx'
 import { useNavigate } from 'react-router-dom'
 import houseflyLogo from '../assets/housefly.png'
+import { getCurrentUser } from '../auth/auth.js'
 
 function Home() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+
+  const getWelcome = () => {
+    const user = getCurrentUser();
+    return user ? `Welcome ${user.name}!` : "";
+  }
   return (
     <>
       <div className='home-container'>
@@ -15,6 +21,7 @@ function Home() {
         <div className='intro-container'>
           <img className="housefly-logo" src={houseflyLogo} alt="Housefly Logo" />
           <div className='title'>{useTypewriter('WELCOME TO HOUSEFLY', 45)}</div>
+          <div className='title'>{getWelcome()}</div>
           <div className='body-text'>
             <a>All the property info you need in one place</a>
             <a>Research smarter, plan better, buy with confidence</a>
