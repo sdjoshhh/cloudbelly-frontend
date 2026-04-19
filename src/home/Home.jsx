@@ -5,7 +5,6 @@ import houseflyLogo from '../assets/housefly.png'
 import { getCurrentUser } from '../auth/auth.js'
 
 function Home() {
-  const navigate = useNavigate();
 
   const getWelcome = () => {
     const user = getCurrentUser();
@@ -26,10 +25,6 @@ function Home() {
             <a>All the property info you need in one place</a>
             <a>Research smarter, plan better, buy with confidence</a>
           </div>
-          {/* <div className='button-container'>
-            <button onClick={() => navigate('/map')}>map</button>
-            <button>analysis</button>
-          </div> */}
           <div className='box'>
             <a className='box-text'>YOUR EYE IN THE SKY</a>
           </div>

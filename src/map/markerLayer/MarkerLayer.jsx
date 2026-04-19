@@ -1,10 +1,6 @@
 import { useState, useEffect, memo, useMemo } from 'react'
 import { Marker, Popup, useMapEvents } from 'react-leaflet'
-
-const SUBURBS = [
-  "Blacktown", "Parramatta", "Chatswood", "Bondi", "Manly",
-  "Newtown", "Randwick", "Surry Hills", "Castle Hill", "Homebush"
-]
+import { SUBURBS } from '../H11A_Omega'
 
 const CITY_COORDS = [-33.8688, 151.2093] // Sydney
 

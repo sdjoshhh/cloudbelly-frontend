@@ -1,4 +1,3 @@
-import './App.css'
 import { Routes, Route } from 'react-router-dom';
 import Login from './auth/Login';
 import Register from './auth/Register';
@@ -21,7 +20,10 @@ function App() {
         <Route path = '/login' element={<Login />} />
         <Route path = '/register' element={<Register />} />
       </Routes>
-      <button onClick={handleLogout}>
+      <button
+        onClick={handleLogout}
+        className="fixed bottom-6 left-6 rounded-xl bg-blue-500 px-6 py-3 text-white text-lg shadow-lg hover:bg-red-600 transition"
+      >
         Logout
       </button>
     </>
