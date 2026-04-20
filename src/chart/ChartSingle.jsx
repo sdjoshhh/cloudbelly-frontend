@@ -20,6 +20,17 @@ function getData({ suburb, state }) {
   return cache[key]
 }
 
+function movingAverage(data, window = 3) {
+  return data.map((_, i) => {
+    const half = Math.floor(window / 2)
+    const start = Math.max(0, i - half)
+    const end = Math.min(data.length, i + half + 1)
+    const slice = data.slice(start, end).filter(v => v !== null)
+    if (!slice.length) return null
+    return Math.round(slice.reduce((a, b) => a + b, 0) / slice.length)
+  })
+}
+
 function toChartJsData(result) {
   const labels = Array.isArray(result?.labels) ? result.labels : []
 
@@ -27,10 +38,10 @@ function toChartJsData(result) {
     ? result.datasets.map((ds) => {
         const raw = Array.isArray(ds.data) ? ds.data : []
 
-        const data = raw.map((v) => {
+        const data = movingAverage(raw.map((v) => {
           const n = Number(String(v).replace(/,/g, ''))
           return Number.isFinite(n) ? n : null
-        })
+        }), 5)
 
         return {
           label: ds.label || 'Dataset',
