@@ -8,11 +8,6 @@ import OverlayLegend from './weather/OverlayLegend'
 import ChartSingle from '../chart/ChartSingle'
 import { OVERLAY_MODES } from './H11A_Omega'
 
-const today = new Date()
-const thirtyDaysAgo = new Date(today)
-thirtyDaysAgo.setDate(today.getDate() - 30)
-const toDateString = d => d.toISOString().split('T')[0]
-
 function InvalidateSize() {
   const map = useMap()
   useEffect(() => { setTimeout(() => map.invalidateSize(), 100) }, [map])
@@ -24,8 +19,8 @@ function Map() {
   const [overlayLoading, setOverlayLoading] = useState(false)
   const [selected, setSelected] = useState(null)
   const [activeOverlays, setActiveOverlays] = useState(new Set())
-  const [dateStart, setDateStart] = useState(toDateString(thirtyDaysAgo))
-  const [dateEnd, setDateEnd] = useState(toDateString(today))
+  const [dateStart, setDateStart] = useState('2026-01-02')
+  const [dateEnd, setDateEnd] = useState('2026-01-05')
 
   const countryBounds = [[-40.0, 120.0], [-15.0, 170.0]]
 

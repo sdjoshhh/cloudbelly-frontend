@@ -3,9 +3,10 @@ import { useMap } from 'react-leaflet'
 import L from 'leaflet'
 import { OMEGA_API_BASE, SUBURBS } from '../H11A_Omega'
 
+// Peclet stores suburb names in uppercase
 const suburbFilter = SUBURBS.map(s => `'${s}'`).join(',')
 const PECLET_GEOJSON_URL =
-  `https://data.peclet.com.au/api/explore/v2.1/catalog/datasets/nsw-administrative-boundaries-theme-suburb/exports/geojson?where=suburbname in (${suburbFilter})`
+  `https://data.peclet.com.au/api/explore/v2.1/catalog/datasets/nsw-administrative-boundaries-theme-suburb/exports/geojson?where=suburbname in (${encodeURIComponent(suburbFilter)})`
 
 async function fetchAvgValue(type, lat, lon, dateStart, dateEnd) {
   const url = `${OMEGA_API_BASE}/data?type=${type}&dateStart=${dateStart}&dateEnd=${dateEnd}&lat=${lat}&lon=${lon}`
@@ -33,9 +34,10 @@ export function valueToColor(value, min, max, colourStops) {
 }
 
 function getCentroid(feature) {
-  const coords = feature.geometry.type === 'Polygon'
-    ? feature.geometry.coordinates[0]
-    : feature.geometry.coordinates[0][0]
+  const geom = feature.properties.geo_shape?.geometry ?? feature.geometry
+  const coords = geom.type === 'Polygon'
+    ? geom.coordinates[0]
+    : geom.coordinates[0][0]
   const n = coords.length
   return {
     lat: parseFloat((coords.reduce((s, c) => s + c[1], 0) / n).toFixed(2)),
@@ -76,17 +78,19 @@ function ChoroplethLayer({ type, dateStart, dateEnd, visible, onLoadingChange, c
       if (!group) return
       group.clearLayers()
       if (!suburbs.length) return
-
+    
       const values = suburbs.map(s => s.avgValue)
       const min = Math.min(...values)
       const max = Math.max(...values)
-
+    
       suburbs.forEach(({ feature, name, avgValue }) => {
-        L.geoJSON(feature, {
+        const geoShape = feature.properties.geo_shape ?? feature
+    
+        L.geoJSON(geoShape, {
           pane: `choroplethPane_${type}`,
           style: {
             fillColor: valueToColor(avgValue, min, max, colourRamp),
-            fillOpacity: 0.65,
+            fillOpacity: 0.90,
             color: '#fff',
             weight: 0.5,
           },
@@ -111,7 +115,13 @@ function ChoroplethLayer({ type, dateStart, dateEnd, visible, onLoadingChange, c
       if (!geojsonCache) {
         try {
           const res = await fetch(PECLET_GEOJSON_URL)
-          geojsonCache = await res.json()
+          const json = await res.json()
+          if (!json.features?.length) {
+            console.error('Peclet returned no features — check suburb name casing or filter syntax')
+            onLoadingChange?.(false)
+            return
+          }
+          geojsonCache = json
         } catch (e) {
           console.error('Failed to load suburb boundaries from Peclet:', e)
           onLoadingChange?.(false)
@@ -122,7 +132,6 @@ function ChoroplethLayer({ type, dateStart, dateEnd, visible, onLoadingChange, c
       if (cancelRef.current) return
 
       const features = geojsonCache.features
-
       const CONCURRENCY = 20
       const results = []
 
@@ -132,8 +141,11 @@ function ChoroplethLayer({ type, dateStart, dateEnd, visible, onLoadingChange, c
         const batchResults = await Promise.all(
           batch.map(async feature => {
             const { lat, lon } = getCentroid(feature)
+            // Try multiple possible property name variations
             const name = feature.properties.suburbname
+              ?? feature.properties.SUBURBNAME
               ?? feature.properties.locality_name
+              ?? feature.properties.name
               ?? `${lat}, ${lon}`
             const avgValue = await fetchAvgValue(type, lat, lon, dateStart, dateEnd)
             if (avgValue === null) return null

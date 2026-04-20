@@ -5,6 +5,10 @@ import houseflyLogo from '../assets/housefly.png'
 import { getCurrentUser } from '../auth/auth.js'
 
 function Home() {
+  const handleLogout = () => {
+    logout();
+    window.location.href = "/";
+  }
 
   const getWelcome = () => {
     const user = getCurrentUser();
@@ -30,6 +34,12 @@ function Home() {
           </div>
         </div>
       </div>
+      <button
+        onClick={handleLogout}
+        className="fixed bottom-6 left-6 rounded-xl bg-blue-500 px-6 py-3 text-white text-lg shadow-lg hover:bg-red-600 transition"
+      >
+        Logout
+      </button>
     </>
   )
 }
