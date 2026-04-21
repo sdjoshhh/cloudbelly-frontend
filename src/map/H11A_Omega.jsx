@@ -8,7 +8,8 @@ export const SUBURBS = [
   "Penrith", "Liverpool", "Campbelltown", "Cronulla", "Hornsby",
   "Ryde", "Hurstville", "Bankstown", "Fairfield", "Auburn",
   "Baulkham Hills", "Dee Why", "Kogarah", "Leichhardt", "Marrickville",
-  "Mosman", "Neutral Bay", "North Sydney", "Pymble", "Strathfield",
+  "Mosman", "Neutral Bay", "North Sydney", "Pymble", "Strathfield", "North Strathfield",
+  "Epping", "Drummoyne", "North Ryde"
   // Regional NSW
   // "Newcastle", "Wollongong", "Orange", "Bathurst", "Dubbo",
   // "Tamworth", "Wagga Wagga", "Albury", "Coffs Harbour", "Lismore",
@@ -19,11 +20,11 @@ export const SUBURBS = [
 export const OMEGA_API_BASE = 'https://a683sqnr5m.execute-api.ap-southeast-2.amazonaws.com'
 
 export const COLOUR_RAMPS = {
-  temperature: [[30, 144, 255], [255, 235, 50], [255, 50, 30]],
+  temperature: [[180, 0, 0], [255, 140, 0]],
   rain: [[199, 229, 255], [65, 145, 220], [8, 29, 120]],
 }
 
-export const OVERLAY_MODES = {
+export const WEATHER_MODES = {
   temperature: {
     type: 'max_temperature',
     label: 'Avg max temperature',

@@ -6,7 +6,13 @@ import MarkerLayer from './markerLayer/MarkerLayer'
 import ChoroplethLayer from './weather/ChloroplethLayer'
 import OverlayLegend from './weather/OverlayLegend'
 import ChartSingle from '../chart/ChartSingle'
-import { OVERLAY_MODES } from './H11A_Omega'
+import { WEATHER_MODES } from './H11A_Omega'
+import { ELEC_MODES } from './F14A_Delta'
+import ElecChoroplethLayer from './electricity/ElecChloroplethLayer'
+import ElecOverlayLegend from './electricity/ElecOverlayLegend'
+
+const DATE_START = '2026-01-02'
+const DATE_END = '2026-01-05'
 
 function InvalidateSize() {
   const map = useMap()
@@ -19,8 +25,7 @@ function Map() {
   const [overlayLoading, setOverlayLoading] = useState(false)
   const [selected, setSelected] = useState(null)
   const [activeOverlays, setActiveOverlays] = useState(new Set())
-  const [dateStart, setDateStart] = useState('2026-01-02')
-  const [dateEnd, setDateEnd] = useState('2026-01-05')
+  const [elecVisible, setElecVisible] = useState(false)
 
   const countryBounds = [[-40.0, 120.0], [-15.0, 170.0]]
 
@@ -33,7 +38,6 @@ function Map() {
 
   return (
     <div className="map-container">
-      {/* Loading overlay */}
       {markersLoading && (
         <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-[1001]">
           <div className="bg-white px-8 py-6 rounded-xl flex flex-col items-center gap-3">
@@ -43,7 +47,6 @@ function Map() {
         </div>
       )}
 
-      {/* Info panel */}
       <div className="absolute top-[50vh] left-[2.5vw] w-[20vw] h-[45vh] z-[1000] bg-white/80 rounded-[1vw] shadow-md">
         <div className="p-[0.7vw] flex flex-col gap-[1vh]">
           {selected ? (
@@ -60,32 +63,10 @@ function Map() {
             </>
           )}
         </div>
-
-        {activeOverlays.size > 0 && (
-          <div className="flex flex-col gap-1.5 px-[0.7vw]">
-            {['From', 'To'].map((lbl, i) => {
-              const isFrom = i === 0
-              return (
-                <label key={lbl} className="flex flex-col text-[11px] font-semibold text-gray-800 gap-0.5">
-                  {lbl}
-                  <input
-                    type="date"
-                    value={isFrom ? dateStart : dateEnd}
-                    min={isFrom ? undefined : dateStart}
-                    max={isFrom ? dateEnd : undefined}
-                    onChange={e => isFrom ? setDateStart(e.target.value) : setDateEnd(e.target.value)}
-                    className="text-xs px-1.5 py-1 border border-gray-300 rounded-md bg-white text-gray-700 cursor-pointer focus:outline-none focus:border-blue-600"
-                  />
-                </label>
-              )
-            })}
-          </div>
-        )}
       </div>
 
-      {/* Overlay toggle buttons */}
       <div className="absolute top-4 right-7 z-[1000] flex flex-col gap-2">
-        {Object.values(OVERLAY_MODES).map(mode => (
+        {Object.values(WEATHER_MODES).map(mode => (
           <button
             key={mode.type}
             onClick={() => toggleOverlay(mode.type)}
@@ -98,6 +79,20 @@ function Map() {
               }`}
           >
             {mode.icon}
+          </button>
+        ))}
+        {ELEC_MODES.map(m => (
+          <button
+            key={m.key}
+            onClick={() => setElecVisible(prev => !prev)}
+            title={m.title}
+            className={`w-[8vh] h-[8vh] rounded-full shadow-md flex items-center justify-center text-base transition-colors
+              ${elecVisible
+                ? 'bg-blue-600 text-white'
+                : 'bg-white/80 text-black hover:bg-gray-600 hover:text-white'
+              }`}
+          >
+            {m.icon}
           </button>
         ))}
       </div>
@@ -117,12 +112,12 @@ function Map() {
         <InvalidateSize />
         <MarkerLayer onLoadingChange={setMarkersLoading} onMarkerClick={setSelected} />
 
-        {Object.values(OVERLAY_MODES).map(mode => (
+        {Object.values(WEATHER_MODES).map(mode => (
           <ChoroplethLayer
             key={mode.type}
             type={mode.type}
-            dateStart={dateStart}
-            dateEnd={dateEnd}
+            dateStart={DATE_START}
+            dateEnd={DATE_END}
             visible={activeOverlays.has(mode.type)}
             onLoadingChange={setOverlayLoading}
             colourRamp={mode.colourRamp}
@@ -130,9 +125,13 @@ function Map() {
             unit={mode.unit}
           />
         ))}
+        <ElecChoroplethLayer
+          visible={elecVisible}
+          onLoadingChange={setOverlayLoading}
+        />
       </MapContainer>
 
-      {Object.values(OVERLAY_MODES)
+      {Object.values(WEATHER_MODES)
         .filter(mode => activeOverlays.has(mode.type))
         .map((mode, i) => (
           <OverlayLegend
@@ -146,6 +145,11 @@ function Map() {
           />
         ))
       }
+      {elecVisible && (
+        <ElecOverlayLegend
+          offset={Object.values(WEATHER_MODES).filter(m => activeOverlays.has(m.type)).length}
+        />
+      )}
     </div>
   )
 }
