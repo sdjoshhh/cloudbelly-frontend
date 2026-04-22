@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
 import { Button, Field, Input, Label } from "@headlessui/react";
 import { useNavigate } from "react-router-dom";
-import { IoHomeSharp } from "react-icons/io5";
 import ErrorPopup from "../error/ErrorPopup";
 import BackgroundAuth from "../background/BackgroundAuth";
-import { register, getCurrentUser } from "./auth"
+import { register } from "./auth.js"
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -55,7 +54,7 @@ const Register = () => {
 
       register(email, password, name);
 
-      window.location.href = "/";
+      window.location.href = "/"; // Force reload to get store data
     } catch (err) {
       setError(err instanceof Error ? err.message : "Registration failed");
     } finally {

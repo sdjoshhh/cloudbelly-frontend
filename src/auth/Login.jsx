@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
 import { Button, Field, Input, Label } from "@headlessui/react";
 import { useNavigate } from "react-router-dom";
-import { IoHomeSharp } from "react-icons/io5";
 import ErrorPopup from "../error/ErrorPopup";
 import BackgroundAuth from "../background/BackgroundAuth";
-import { login, getCurrentUser } from "./auth"
+import { login, getCurrentUser } from "./auth.js"
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -43,7 +42,7 @@ const Login = () => {
 
       login(email, password);
 
-      window.location.href = "/";
+      window.location.href = "/"; // Force reload to get store data
     } catch (err) {
       setError(err instanceof Error ? err.message : "Login failed");
     } finally {
@@ -116,7 +115,7 @@ const Login = () => {
                 </Button>
 
                 <p className="mt-6 text-center text-sm text-slate-500">
-                  Don’t have an account?{" "}
+                  Don't have an account?{" "}
                   <button
                     type="button"
                     onClick={() => navigate("/register")}
