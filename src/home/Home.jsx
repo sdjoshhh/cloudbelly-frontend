@@ -5,7 +5,7 @@ import houseflyLogo from '../assets/housefly-logo.png'
 import houseflyText from '../assets/housefly-text.png'
 import { getCurrentUser } from '../auth/auth.js'
 import { Button } from '@headlessui/react';
-import BackgroundCubes from '../background/BackgroundCubes.jsx'
+import BackgroundHome from '../background/BackgroundHome.jsx'
 
 export function ContentCard({ children, className = "" }) {
   return (
@@ -41,7 +41,7 @@ function Home() {
   return (
     <>
       <div className="relative min-h-screen bg-slate-50 mt-16">
-        <BackgroundCubes />
+        <BackgroundHome />
       <main className="py-45 relative z-10">
         <div className='home-container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8'>
           {/* Hero */}

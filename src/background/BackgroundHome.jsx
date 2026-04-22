@@ -1,4 +1,4 @@
-const BackgroundCubes = () => {
+const BackgroundHome = () => {
   return (
     <div
       aria-hidden="true"
@@ -21,4 +21,4 @@ const BackgroundCubes = () => {
   );
 };
 
-export default BackgroundCubes;
+export default BackgroundHome;
