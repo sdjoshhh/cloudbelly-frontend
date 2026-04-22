@@ -2,9 +2,99 @@
 
 * {
   box-sizing: border-box;
-  font-family: sans-serif;
+  font-family: Inter;
 }
 
-.auth-container {
-  background-color: #000011;
+.home-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.no-scroll {
+  overflow: hidden;
+  height: 100%;
+}
+
+.cube {
+  position: absolute;
+  border-radius: 1.5rem;
+  transform-style: preserve-3d;
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.55);
+  box-shadow:
+    0 20px 60px rgba(148, 163, 184, 0.20),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45);
+  opacity: 0.5;
+  animation: slowSpin linear infinite;
+}
+
+.cube::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background:
+    linear-gradient(135deg,
+      rgba(255,255,255,0.65),
+      rgba(219,234,254,0.35) 35%,
+      rgba(191,219,254,0.22) 65%,
+      rgba(255,255,255,0.4)
+    );
+}
+
+.cube-a {
+  width: 260px;
+  height: 260px;
+  top: 8%;
+  left: -60px;
+  transform: rotate(18deg);
+  animation-duration: 42s;
+}
+
+.cube-b {
+  width: 180px;
+  height: 180px;
+  top: 20%;
+  right: 8%;
+  transform: rotate(28deg);
+  animation-duration: 34s;
+  opacity: 0.38;
+}
+
+.cube-c {
+  width: 320px;
+  height: 320px;
+  bottom: -80px;
+  right: 18%;
+  transform: rotate(12deg);
+  animation-duration: 56s;
+  opacity: 0.3;
+}
+
+@keyframes slowSpin {
+  from {
+    transform: rotate(0deg) translateY(0px);
+  }
+  25% {
+    transform: rotate(90deg) translateY(-6px);
+  }
+  50% {
+    transform: rotate(180deg) translateY(0px);
+  }
+  75% {
+    transform: rotate(270deg) translateY(6px);
+  }
+  to {
+    transform: rotate(360deg) translateY(0px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cube {
+    animation: none;
+  }
 }

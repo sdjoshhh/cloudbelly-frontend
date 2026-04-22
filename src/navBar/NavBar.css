@@ -1,0 +1,29 @@
+.Navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  margin-left: 93vw;
+  margin-top: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 10vh;
+  width: 10vw;
+  gap: 1vw;
+  z-index: 2000;
+}
+
+.Navbar button {
+  background-color: rgba(255, 255, 255, 0.8);
+  color: black;
+  border: none;
+  height: 8vh;
+  width: 8vh;
+  border-radius: 50%;
+  font-size: medium;
+}
+
+.Navbar button:hover {
+  background-color: rgb(76, 76, 76);
+  cursor: pointer;
+}
