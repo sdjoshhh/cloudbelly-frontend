@@ -22,7 +22,7 @@ function Analytics() {
           }
         }}/>
         {/* list selected suburbs */}
-        <div className="relative flex flex-row max-w-200 flex-wrap gap-2 px-8 mt-4 justify-center">
+        <div className="relative flex flex-row w-full flex-wrap gap-2 px-8 mt-4 justify-center items-center">
         {selectedSuburbs.map((label, index) => (
           <div
             key={index}
