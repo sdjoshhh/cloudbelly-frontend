@@ -1,8 +1,8 @@
 import { useState } from "react"
 import BackgroundHome from "../background/BackgroundHome"
-import SearchBar from "./searchBar"
+import SearchBar from "./SearchBar"
 import { RxCrossCircled } from "react-icons/rx"
-import LineChart from "../chart/lineChart"
+import LineChart from "../chart/LineChart"
 import BoxPlot from "../chart/BoxPlot"
 
 function Analytics() {
