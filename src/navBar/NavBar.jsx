@@ -7,7 +7,7 @@ import houseflyLogo from '../assets/housefly-logo.png'
 import houseflyText from '../assets/housefly-text.png'
 import { getCurrentUser } from '../auth/auth';
 
-function Navbar({ isLoggedIn, profilePhotoUrl }) {
+function NavBar({ isLoggedIn, profilePhotoUrl }) {
   const navItems = [
     { to: "/", label: "Home", icon: <IoHomeSharp className="text-lg" /> },
     { to: "/map", label: "Map", icon: <HiMapPin className="text-lg" /> },
@@ -85,4 +85,4 @@ function Navbar({ isLoggedIn, profilePhotoUrl }) {
   );
 }
 
-export default Navbar;
+export default NavBar;
