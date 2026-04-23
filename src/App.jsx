@@ -3,12 +3,12 @@ import Login from './auth/Login';
 import Register from './auth/Register';
 import Home from './home/Home';
 import Map from './map/Map';
-import Navbar from './navBar/NavBar';
+import NavBar from './navBar/NavBar';
 
 function App() {
   return (
     <>
-      <Navbar />
+      <NavBar />
       <Routes>
         <Route path = '/' element={<Home />} />
         <Route path = '/map' element={<Map />} />
