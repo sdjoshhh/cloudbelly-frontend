@@ -1,6 +1,7 @@
 import './Home.css'
-import useTypewriter from './UseTypewriter.jsx'
 import { useNavigate } from 'react-router-dom'
+import { useHousingEvents } from '../hooks/useHousingEvents.js'
+import { useTypewriter } from '../hooks/useTypewriter.js'
 import houseflyLogo from '../assets/housefly-logo.png'
 import houseflyText from '../assets/housefly-text.png'
 import { getCurrentUser } from '../auth/auth.js'
@@ -38,6 +39,16 @@ export function PageHeader({ title, subtitle, action }) {
 function Home() {
   const navigate = useNavigate()
   const user = getCurrentUser();
+  const welcomeText = useTypewriter(`Welcome${user ? `, ${user.name.split(' ')[0]}` : ''}!`, 45);
+  const { citySummary, suburbSummaries, loading } = useHousingEvents();
+
+  if (loading) return (
+    <div className="relative min-h-screen bg-slate-50 mt-16">
+        <BackgroundHome />
+        <h1 className="mt-5 text-4xl sm:text-5xl font-black tracking-tight leading-tight">Loading...</h1>
+    </div>
+  );
+
   return (
     <>
       <div className="relative min-h-screen bg-slate-50 mt-16">
@@ -53,7 +64,7 @@ function Home() {
                 </div>
 
                 <h1 className="mt-5 text-4xl sm:text-5xl font-black tracking-tight leading-tight">
-                  {useTypewriter(`Welcome${user ? `, ${user.name.split(' ')[0]}` : ''}!`, 45)}
+                  {welcomeText}
                 </h1>
                 <p className="mt-4 max-w-xl text-base sm:text-lg text-blue-100/90">
                   All the property info you need in one place. <br />

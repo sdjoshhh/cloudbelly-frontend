@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { useMap } from 'react-leaflet'
 import L from 'leaflet'
-import { getElecPrice } from '../F14A_Delta'
+import { getElecPrice } from '../../services/elecPriceApi'
 
 const DATE_START = '2026-04-10'
 const DATE_END = '2026-04-19'

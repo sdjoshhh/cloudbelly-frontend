@@ -1,7 +1,8 @@
 import { useEffect, useRef } from 'react'
 import { useMap } from 'react-leaflet'
 import L from 'leaflet'
-import { OMEGA_API_BASE, SUBURBS } from '../H11A_Omega'
+import { OMEGA_API_BASE } from '../../services/weatherApi'
+import { SUBURBS } from '../../data/suburbs'
 
 // Peclet stores suburb names in uppercase
 const suburbFilter = SUBURBS.map(s => `'${s}'`).join(',')

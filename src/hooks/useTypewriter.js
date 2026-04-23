@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 
-const useTypewriter = (text, speed = 20) => {
+export function useTypewriter(text, speed = 20) {
   const [index, setIndex] = useState(0);
   const displayText = useMemo(() => text.slice(0, index), [index]);
   useEffect(() => {
@@ -17,6 +17,4 @@ const useTypewriter = (text, speed = 20) => {
   }, [index, text, speed]);
 
   return displayText;
-};
-
-export default useTypewriter;
+}
