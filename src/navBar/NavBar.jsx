@@ -1,4 +1,4 @@
-import './Navbar.css'
+import './NavBar.css'
 import { NavLink } from 'react-router-dom';
 import { IoHomeSharp, IoPersonSharp } from "react-icons/io5";
 import { HiMapPin } from "react-icons/hi2";
