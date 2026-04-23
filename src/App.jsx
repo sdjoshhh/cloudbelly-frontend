@@ -3,7 +3,7 @@ import Login from './auth/Login';
 import Register from './auth/Register';
 import Home from './home/Home';
 import Map from './map/Map';
-import Analytics from './analysis/analytics';
+import Analytics from './Analytics/analytics';
 import NavBar from './navBar/NavBar';
 
 function App() {
