@@ -11,7 +11,7 @@ function NavBar({ isLoggedIn, profilePhotoUrl }) {
   const navItems = [
     { to: "/", label: "Home", icon: <IoHomeSharp className="text-lg" /> },
     { to: "/map", label: "Map", icon: <HiMapPin className="text-lg" /> },
-    { to: "/analysis", label: "Analytics", icon: <FaChartLine className="text-lg" /> },
+    { to: "/analytics", label: "Analytics", icon: <FaChartLine className="text-lg" /> },
   ];
 
   const user = getCurrentUser();
