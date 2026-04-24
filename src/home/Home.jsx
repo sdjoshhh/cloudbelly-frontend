@@ -53,7 +53,12 @@ function Home() {
   if (loading) return (
     <div className="relative min-h-screen bg-slate-50 mt-16">
       <BackgroundHome />
-      <h1 className="mt-5 text-4xl sm:text-5xl font-black tracking-tight leading-tight">Loading...</h1>
+      <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-[1001]">
+        <div className="bg-white px-8 py-6 rounded-xl flex flex-col items-center gap-3">
+          <div className="w-9 h-9 border-4 border-gray-200 border-t-gray-500 rounded-full animate-spin" />
+          <p className="text-sm text-gray-700">Loading...</p>
+        </div>
+      </div>
     </div>
   );
 
