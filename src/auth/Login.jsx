@@ -42,7 +42,7 @@ const Login = () => {
 
       login(email, password);
 
-      window.location.href = "/"; // Force reload to get store data
+      navigate("/")
     } catch (err) {
       setError(err instanceof Error ? err.message : "Login failed");
     } finally {

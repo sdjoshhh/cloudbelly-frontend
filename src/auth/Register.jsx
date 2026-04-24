@@ -54,7 +54,7 @@ const Register = () => {
 
       register(email, password, name);
 
-      window.location.href = "/"; // Force reload to get store data
+      navigate("/")
     } catch (err) {
       setError(err instanceof Error ? err.message : "Registration failed");
     } finally {

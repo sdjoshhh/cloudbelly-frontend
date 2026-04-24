@@ -6,6 +6,8 @@ import { FaChartLine } from "react-icons/fa6";
 import houseflyLogo from '../assets/housefly-logo.png'
 import houseflyText from '../assets/housefly-text.png'
 import { getCurrentUser, logout } from '../auth/auth';
+import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
 function NavBar({ isLoggedIn, profilePhotoUrl }) {
   const navItems = [
@@ -13,8 +15,13 @@ function NavBar({ isLoggedIn, profilePhotoUrl }) {
     { to: "/map", label: "Map", icon: <HiMapPin className="text-lg" /> },
     { to: "/analytics", label: "Analytics", icon: <FaChartLine className="text-lg" /> },
   ];
+  const location = useLocation();
 
-  const user = getCurrentUser();
+  let user = getCurrentUser();
+  useEffect(() => {
+    user = getCurrentUser();
+  }, [location]);
+  
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 border-b border-slate-200 bg-white/90 backdrop-blur-md">
