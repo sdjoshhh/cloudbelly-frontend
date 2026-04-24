@@ -80,11 +80,17 @@ function Home() {
                 </p>
 
                 <div className="mt-8 flex flex-wrap gap-3">
-                  <button className="rounded-xl bg-white px-5 py-3 text-sm font-bold text-slate-900 shadow-sm transition hover:bg-slate-100">
+                  <button
+                    className="rounded-xl bg-white px-5 py-3 text-sm font-bold text-slate-900 shadow-sm transition hover:bg-slate-100"
+                    onClick={() => navigate("/map")}
+                  >
                     Explore Events
                   </button>
-                  <button className="rounded-xl border border-white/20 bg-white/10 px-5 py-3 text-sm font-bold text-white transition hover:bg-white/15">
-                    Host an Event
+                  <button
+                    className="rounded-xl border border-white/20 bg-white/10 px-5 py-3 text-sm font-bold text-white transition hover:bg-white/15"
+                    onClick={() => navigate("/analytics")}
+                  >
+                    See Analytics
                   </button>
                 </div>
               </div>
