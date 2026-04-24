@@ -10,6 +10,7 @@ import { Button } from '@headlessui/react'
 import BackgroundHome from '../background/BackgroundHome.jsx'
 import { getFeaturedEvents } from '../services/housingEventsApi.js'
 import { SUBURB_IMAGES } from '../data/suburbs.js'
+import { logout } from "../auth/auth.js"
 
 export function ContentCard({ children, className = "" }) {
   return (
@@ -178,12 +179,21 @@ function Home() {
                 >
                   See Analytics
                 </button>
-                <button
-                  className="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50 transition"
-                  onClick={() => { window.scrollTo(0, 0); navigate("/register"); }}
-                >
-                  Create Account
-                </button>
+                {!user ? (
+                  <button
+                    className="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50 transition"
+                    onClick={() => { window.scrollTo(0, 0); navigate("/register"); }}
+                  >
+                    Create Account
+                  </button>
+                ) : (
+                  <button
+                    className="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50 transition"
+                    onClick={() => { logout(); window.location.reload(); }}
+                  >
+                    Logout
+                  </button>
+                )}
               </div>
             </ContentCard>
           </div>
