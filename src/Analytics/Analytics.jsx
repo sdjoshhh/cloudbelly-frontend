@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import BackgroundHome from "../background/BackgroundHome"
 import SearchBar from "./SearchBar"
 import { RxCrossCircled } from "react-icons/rx"
@@ -11,6 +11,10 @@ function Analytics() {
   const removeSuburb = (suburb) => {
     setSelectedSuburbs(prev => prev.filter(s => s !== suburb));
   }
+
+  useEffect(() => {
+    document.title = "Analytics - Housefly";
+  }, []);
 
   return (
     <>

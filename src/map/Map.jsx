@@ -6,8 +6,8 @@ import MarkerLayer from './markerLayer/MarkerLayer'
 import ChoroplethLayer from './weather/ChloroplethLayer'
 import OverlayLegend from './weather/OverlayLegend'
 import ChartSingle from '../chart/ChartSingle'
-import { WEATHER_MODES } from './H11A_Omega'
-import { ELEC_MODES } from './F14A_Delta'
+import { WEATHER_MODES } from '../services/weatherApi'
+import { ELEC_MODES } from '../services/elecPriceApi'
 import ElecChoroplethLayer from './electricity/ElecChloroplethLayer'
 import ElecOverlayLegend from './electricity/ElecOverlayLegend'
 
@@ -28,6 +28,17 @@ function Map() {
   const [elecVisible, setElecVisible] = useState(false)
 
   const countryBounds = [[-40.0, 120.0], [-15.0, 170.0]]
+
+  useEffect(() => {
+      document.title = "Map - Housefly";
+      // Lock scroll when component mounts
+      document.body.classList.add('no-scroll');
+  
+      // Unlock scroll when component unmounts
+      return () => {
+        document.body.classList.remove('no-scroll');
+      };
+    }, []);
 
   const toggleOverlay = key =>
     setActiveOverlays(prev => {

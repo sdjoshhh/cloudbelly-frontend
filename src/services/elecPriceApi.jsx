@@ -29,4 +29,4 @@ export function parseRes(rows) {
 
 export const ELEC_MODES = [
   { key: 'price',  icon: <BsLightningChargeFill />,  title: 'Electricity price'  },
-]  
+];

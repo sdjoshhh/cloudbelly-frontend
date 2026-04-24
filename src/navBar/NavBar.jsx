@@ -5,7 +5,7 @@ import { HiMapPin } from "react-icons/hi2";
 import { FaChartLine } from "react-icons/fa6";
 import houseflyLogo from '../assets/housefly-logo.png'
 import houseflyText from '../assets/housefly-text.png'
-import { getCurrentUser } from '../auth/auth';
+import { getCurrentUser, logout } from '../auth/auth';
 
 function NavBar({ isLoggedIn, profilePhotoUrl }) {
   const navItems = [
@@ -62,22 +62,13 @@ function NavBar({ isLoggedIn, profilePhotoUrl }) {
               <span className="hidden sm:inline">Login</span>
             </NavLink>
           ) : (
-            <NavLink
-              to="/profile"
-              className="ml-2 flex items-center justify-center rounded-full ring-2 ring-transparent transition hover:ring-blue-200"
+            <button
+              className="ml-2 flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50"
+              onClick={() => { logout(); window.location.reload(); }}
             >
-              {profilePhotoUrl ? (
-                <img
-                  src={profilePhotoUrl}
-                  alt="Profile"
-                  className="h-10 w-10 rounded-full object-cover border border-slate-200"
-                />
-              ) : (
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 text-slate-600 border border-slate-200">
-                  <IoPersonSharp className="text-xl" />
-                </div>
-              )}
-            </NavLink>
+              <IoPersonSharp className="text-lg" />
+              <span className="hidden sm:inline">Logout</span>
+            </button>
           )}
         </nav>
       </div>

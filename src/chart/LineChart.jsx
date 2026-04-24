@@ -19,7 +19,7 @@ const cache = {}
 function getData({ suburb, state }) {
   const key = `${formatSuburb(suburb)}-${state}`
   if (cache[key]) return cache[key]
-  const url = `https://tvfiek3hzi.execute-api.us-east-1.amazonaws.com/dev/api/v1/analytics/price-trend?suburb=${formatSuburb(suburb)}&state=${state}`
+  const url = `https://gge1ls7ns8.execute-api.us-east-1.amazonaws.com/dev/api/v1/analytics/price-trend?suburb=${formatSuburb(suburb)}&state=${state}`
   cache[key] = fetch(url).then((r) => {
     if (!r.ok) throw new Error(`Failed to fetch data for ${suburb}`)
     return r.json()
