@@ -29,6 +29,17 @@ function Map() {
 
   const countryBounds = [[-40.0, 120.0], [-15.0, 170.0]]
 
+  useEffect(() => {
+      document.title = "Map - Housefly";
+      // Lock scroll when component mounts
+      document.body.classList.add('no-scroll');
+  
+      // Unlock scroll when component unmounts
+      return () => {
+        document.body.classList.remove('no-scroll');
+      };
+    }, []);
+
   const toggleOverlay = key =>
     setActiveOverlays(prev => {
       const next = new Set(prev)

@@ -14,7 +14,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    document.title = "Login";
+    document.title = "Login - Housefly";
     // Lock scroll when component mounts
     document.body.classList.add('no-scroll');
 

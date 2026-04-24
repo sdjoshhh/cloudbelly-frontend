@@ -17,7 +17,7 @@ const Register = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    document.title = "Register";
+    document.title = "Register - Housefly";
     // Lock scroll when component mounts
     document.body.classList.add('no-scroll');
 

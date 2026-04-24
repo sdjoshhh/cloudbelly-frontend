@@ -1,12 +1,15 @@
 import './Home.css'
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useHousingEvents } from '../hooks/useHousingEvents.js'
 import { useTypewriter } from '../hooks/useTypewriter.js'
 import houseflyLogo from '../assets/housefly-logo.png'
 import houseflyText from '../assets/housefly-text.png'
 import { getCurrentUser } from '../auth/auth.js'
-import { Button } from '@headlessui/react';
+import { Button } from '@headlessui/react'
 import BackgroundHome from '../background/BackgroundHome.jsx'
+import { getFeaturedEvents } from '../services/housingEventsApi.js'
+import { SUBURB_IMAGES } from '../data/suburbs.js'
 
 export function ContentCard({ children, className = "" }) {
   return (
@@ -42,10 +45,14 @@ function Home() {
   const welcomeText = useTypewriter(`Welcome${user ? `, ${user.name.split(' ')[0]}` : ''}!`, 45);
   const { citySummary, suburbSummaries, loading } = useHousingEvents();
 
+  useEffect(() => {
+    document.title = "Housefly";
+  }, []);
+
   if (loading) return (
     <div className="relative min-h-screen bg-slate-50 mt-16">
-        <BackgroundHome />
-        <h1 className="mt-5 text-4xl sm:text-5xl font-black tracking-tight leading-tight">Loading...</h1>
+      <BackgroundHome />
+      <h1 className="mt-5 text-4xl sm:text-5xl font-black tracking-tight leading-tight">Loading...</h1>
     </div>
   );
 
@@ -67,7 +74,7 @@ function Home() {
                   {welcomeText}
                 </h1>
                 <p className="mt-4 max-w-xl text-base sm:text-lg text-blue-100/90">
-                  All the property info you need in one place. <br />
+                  Enjoy all the property info you need in one place. <br />
                   Research smarter, plan better, buy with confidence.
                 </p>
 
@@ -83,16 +90,16 @@ function Home() {
 
               <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-1">
                 <div className="rounded-2xl border border-white/15 bg-white/10 p-5 backdrop-blur">
-                  <p className="text-sm font-semibold text-blue-100">Events This Week</p>
-                  <p className="mt-2 text-4xl font-black">128</p>
+                  <p className="text-sm font-semibold text-blue-100">Total Sales</p>
+                  <p className="mt-2 text-4xl font-black">{citySummary?.count ?? 0}</p>
                 </div>
                 <div className="rounded-2xl border border-white/15 bg-white/10 p-5 backdrop-blur">
                   <p className="text-sm font-semibold text-blue-100">Active Suburbs</p>
-                  <p className="mt-2 text-4xl font-black">43</p>
+                  <p className="mt-2 text-4xl font-black">{suburbSummaries?.length ?? 0}</p>
                 </div>
                 <div className="rounded-2xl border border-white/15 bg-white/10 p-5 backdrop-blur">
-                  <p className="text-sm font-semibold text-blue-100">Active Homes</p>
-                  <p className="mt-2 text-4xl font-black">1.4k</p>
+                  <p className="text-sm font-semibold text-blue-100">Average Price</p>
+                  <p className="mt-2 text-4xl font-black">{`$${citySummary?.avgPrice?.toLocaleString() ?? 0}`}</p>
                 </div>
               </div>
             </div>
@@ -134,20 +141,20 @@ function Home() {
           <div className="mt-10 grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
             <ContentCard>
               <h2 className="text-xl font-black tracking-tight text-slate-900">
-                Featured Events
+                Featured Areas
               </h2>
               <div className="mt-4 grid gap-4 sm:grid-cols-2">
-                {[1, 2, 3, 4].map((item) => (
+                {suburbSummaries.slice(0, 4).map((suburb, index) => (
                   <div
-                    key={item}
+                    key={index}
                     className="rounded-2xl border border-slate-200 bg-slate-50 p-4"
                   >
-                    <div className="h-32 rounded-xl bg-slate-200" />
+                    <img src={SUBURB_IMAGES[suburb.label] ?? `https://source.unsplash.com/600x400/?${suburb.label}`} alt={suburb.label} className="h-32 w-48 object-cover rounded-xl bg-slate-200" />
                     <h3 className="mt-3 font-bold text-slate-900">
-                      Example Housing Event
+                      {suburb.label}
                     </h3>
                     <p className="mt-1 text-sm text-slate-600">
-                      North Sydney • Saturday 11:00 AM
+                      {`${suburb.count} sales • $${suburb.avgPrice.toLocaleString()} avg.`}
                     </p>
                   </div>
                 ))}
