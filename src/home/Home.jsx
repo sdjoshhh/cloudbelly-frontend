@@ -137,9 +137,9 @@ function Home() {
             </ContentCard>
 
             <ContentCard>
-              <h3 className="text-lg font-bold text-slate-900">Analytics for organisers</h3>
+              <h3 className="text-lg font-bold text-slate-900">Suburb Analytics</h3>
               <p className="mt-2 text-sm text-slate-600">
-                Track engagement, attendance, and event performance in one place.
+                Track property trends and insights across different suburbs.
               </p>
             </ContentCard>
           </div>
