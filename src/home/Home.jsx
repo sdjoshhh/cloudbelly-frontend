@@ -59,12 +59,12 @@ function Home() {
 
   return (
     <>
-      <div className="relative min-h-screen bg-slate-50 mt-16">
+      <div className="min-h-screen flex flex-col bg-slate-50 mt-50 mb-16">
         <BackgroundHome />
-      <main className="py-45 relative z-10">
+      <main className="relative z-10">
         <div className='home-container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8'>
           {/* Hero */}
-          <section className="rounded-3xl bg-gradient-to-br from-slate-950 via-blue-900 to-blue-600 text-white shadow-xl">
+          <section className="mt-50 rounded-3xl bg-gradient-to-br from-slate-950 via-blue-900 to-blue-600 text-white shadow-xl">
             <div className="grid gap-8 px-6 py-10 sm:px-8 sm:py-8 lg:grid-cols-2 lg:items-center">
               <div>
                 <div className="inline-flex rounded-full border border-white/20 bg-white/10 px-4 py-1 text-xs font-bold uppercase tracking-[0.25em] text-blue-100">

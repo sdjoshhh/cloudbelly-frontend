@@ -17,7 +17,7 @@ function sleep(ms) {
 
 async function fetchEventsForSuburb(suburb, state = "NSW") {
   const res = await fetch(
-    `https://tvfiek3hzi.execute-api.us-east-1.amazonaws.com/dev/api/v1/events?suburb=${encodeURIComponent(suburb)}&state=${encodeURIComponent(state)}`
+    `https://gge1ls7ns8.execute-api.us-east-1.amazonaws.com/dev/api/v1/events?suburb=${encodeURIComponent(suburb)}&state=${encodeURIComponent(state)}`
   );
 
   if (!res.ok) {
