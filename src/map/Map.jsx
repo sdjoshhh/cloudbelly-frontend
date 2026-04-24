@@ -1,6 +1,5 @@
 import { MapContainer, TileLayer, useMap } from 'react-leaflet'
 import { useEffect, useState } from 'react'
-import 'leaflet/dist/leaflet.css'
 import './Map.css'
 import MarkerLayer from './markerLayer/MarkerLayer'
 import ChoroplethLayer from './weather/ChloroplethLayer'
@@ -10,6 +9,21 @@ import { WEATHER_MODES } from '../services/weatherApi'
 import { ELEC_MODES } from '../services/elecPriceApi'
 import ElecChoroplethLayer from './electricity/ElecChloroplethLayer'
 import ElecOverlayLegend from './electricity/ElecOverlayLegend'
+
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+
+import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
+import markerIcon from "leaflet/dist/images/marker-icon.png";
+import markerShadow from "leaflet/dist/images/marker-shadow.png";
+
+delete L.Icon.Default.prototype._getIconUrl;
+
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: markerIcon2x,
+  iconUrl: markerIcon,
+  shadowUrl: markerShadow,
+});
 
 const DATE_START = '2026-01-02'
 const DATE_END = '2026-01-05'
